@@ -1,0 +1,56 @@
+.newsList {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, 320px);
+  gap: 20px;
+  align-items: flex-start;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.newsListItem {
+  padding: 15px;
+  height: -webkit-fill-available;
+  max-width: 320px;
+  border: 1px solid black;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+}
+
+.newsListItem h6 {
+  color: aquamarine;
+}
+
+.newsListItem p {
+  text-align: left;
+}
+
+.newsListItemLink {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  opacity: 0;
+  z-index: 5;
+  cursor: pointer;
+}
+
+.newsListItemImage {
+  width: 100%;
+  height: auto;
+  max-height: 162px;
+}
+
+.meta {
+  margin: 20px 0;
+}
+
+.item {
+  margin: 10px;
+  cursor: pointer;
+}
+
+.selected {
+  color: red
+}
