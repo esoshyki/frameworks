@@ -2,6 +2,7 @@ import { Show } from "solid-js";
 import { NewsItemData } from "../types";
 import classes from "./NewsList.module.css";
 import cls from "classnames";
+import defaultImg from '../assets/favicon.ico'
 
 interface Props {
   data: NewsItemData;
@@ -20,7 +21,7 @@ export default function NewsItem(props: Props) {
         />
       </Show>
       <img
-        src={data.urlToImage || `/favicon.png`}
+        src={data.urlToImage || defaultImg}
         alt="image"
         class={classes.newsListItemImage}
       />

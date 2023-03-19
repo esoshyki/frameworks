@@ -43,6 +43,11 @@ export default function NewsList() {
       setError(response.error);
     } else if (response.data) {
       setData(response.data.articles.map(getNewsItemData));
+      console.log(response.data.totalResults);
+      setMeta(prev => ({
+        ...prev,
+        totalResults: response.data?.totalResults || 0
+      }))
     }
     setLoading(false);
     clearTimer()
@@ -60,10 +65,12 @@ export default function NewsList() {
   };
 
   const setPage = (page: number) => {
+    console.log(page);
     setMeta((prev) => ({
       ...prev,
       page,
     }));
+    setTimeout(fetchData)
   };
 
   onMount(() => {
