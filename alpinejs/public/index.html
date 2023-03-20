@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" src="style.css" />
+  </head>
+  <body>
+    <div class="container-flex-col full-width">
+      <h2>Поиск новостей</h2>
+
+      <div
+        x-data="{ value : $store.news.input }"
+        class="container-flex-col full-width"
+      >
+        <input
+          class="main-input"
+          x-init="$store.news.fetchData()"
+          x-bind:value="value"
+          x-on:input="e => $store.news.setInput(e.target.value)"
+        />
+      </div>
+
+      <div x-data class="meta container-flex-row full-width">
+        <template
+          x-for="item in $store.news.numbers"
+          class="meta container-flex-col full-width dn"
+          hidden
+        >
+          <span
+            x-text="item || '...'"
+            x-bind:class="{ item: true, selected: item === $store.news.meta.page  }"
+            x-on:click="$store.news.setPage(item)"
+            ></span>
+        </template>
+      </div>
+
+      <div
+        x-data="{ data : $store.news.data, loading: $store.news.loading }"
+        class="news-list"
+      >
+        <template x-if="$store.news.loading">
+          <h5>Loading</h5>
+        </template>
+
+        <template x-for="item in $store.news.data">
+          <div class="news-list-item">
+            <a
+              class="news-list-item-link full-width"
+              x-bind:href="item.url"
+              target="_blank"
+            ></a>
+            <img
+              x-bind:src="item.urlToImage || '/no-photo.png'"
+              alt="image"
+              class="news-list-item-image"
+            />
+            <h5 x-text="item.title"></h5>
+            <p x-text="item.description"></p>
+            <h6 x-text="data.author"></h6>
+          </div>
+        </template>
+      </div>
+
+      <div x-data class="meta container-flex-row full-width">
+        <template
+          x-for="item in $store.news.numbers"
+          class="meta container-flex-col full-width dn"
+          hidden
+        >
+          <span
+            x-text="item || '...'"
+            x-bind:class="{ item: true, selected: item === $store.news.meta.page  }"
+            x-on:click="$store.news.setPage(item)"
+            ></span>
+        </template>
+      </div>
+
+    </div>
+
+  </body>
+</html>
