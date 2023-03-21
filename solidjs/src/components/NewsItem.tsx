@@ -13,13 +13,11 @@ export default function NewsItem(props: Props) {
 
   return (
     <div class={classes.newsListItem}>
-      <Show when={props.data.url}>
-        <a
+      {data.url && <a
           class={cls([classes.newsListItemLink, "full-width"])}
           href={data.url as string}
           target="_blank"
-        />
-      </Show>
+        />}
       <img
         src={data.urlToImage || defaultImg}
         alt="image"
