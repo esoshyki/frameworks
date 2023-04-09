@@ -1,0 +1,14 @@
+<div class="news-list-item">
+  <a class="news-list-item-link full-width"
+    [href]="data.url"
+    target="_blank"
+    ></a>
+  <img
+    [src]="data.urlToImage || 'favicon.ico'"
+    alt="image"
+    class="news-list-item-image"
+  >
+  <h5>{{ data.title }}</h5>
+  <p>{{ data.description }}</p>
+  <h6>{{ data.author }}</h6>
+</div>

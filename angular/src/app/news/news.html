@@ -1,0 +1,10 @@
+<div class="container-flex-col full-width">
+  <h2>News</h2>
+  <h5 *ngIf="dataService.getPending()">Loading</h5>
+  <news-item-meta
+    [props]="{ meta: dataService.getMeta(), setPage: dataService.setPage }"
+  ></news-item-meta>
+  <div class="news-list">
+    <news-item *ngFor="let data of data()" [data]="data"></news-item>
+  </div>
+</div>

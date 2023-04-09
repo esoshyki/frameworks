@@ -1,0 +1,6 @@
+<div class="meta">
+  <span *ngFor="let item of numbers" [ngClass]="{'item': true, 'selected': item === props.meta.page }" (click)="setPage(item)">
+    {{ item }}
+  </span>
+    
+</div>    

@@ -1,0 +1,142 @@
+---
+import { api } from '../api';
+import { getNewsItemData } from '../dto/NewsItem';
+import { getSearchMeta } from '../helpers/getSearchMeta';
+import type { Meta, NewsItemData } from '../types';
+
+
+const store = {
+  input: "ukraine",
+  error: "",
+  data: [] as NewsItemData[],
+  loading: false,
+  meta: {
+    page: 1,
+    pageSize: 20,
+    totalResults: 0
+  } as Meta,
+  timer: null as null | number,
+  numbers: [] as Array<null | number>
+}
+
+const ID = (id: string) => window.document.getElementById(id);
+const mainInput = ID('main-input');
+const loader = ID('loader');
+
+interface SetNodeProperyProps {
+	visible?: boolean
+}
+
+const setNodePropery = (node: HTMLElement | null, {
+	visible
+} : SetNodeProperyProps) => {
+	if (node) {
+		if (typeof visible === 'boolean') {
+			node.style.visibility = visible ? 'visible' : 'hidden'
+		}
+	}
+}
+
+
+const clearTimer = () => {
+  if (store.timer) {
+    clearTimeout(store.timer);
+    store.timer = null;
+  }
+};
+
+const setPage = (page: number) => {
+	store.meta.page = page;
+  fetchData();
+};
+
+const fetchData = async () => {
+	setNodePropery(loader, { visible: true })
+	const meta = store.meta;
+	const response = await api.getEverething({
+		q: store.input,
+		page: meta.page,
+		pageSize: meta.pageSize,
+	});
+
+if (response.error) {
+	store.error = response.error;
+} else if (response.data) {
+	store.data = response.data.articles.map(getNewsItemData);
+	console.log(response.data.totalResults);
+	store.meta = {
+		...store.meta,
+		totalResults: response.data?.totalResults || 0
+	}
+	store.numbers = getSearchMeta(store.meta);
+};
+setNodePropery(loader, { visible: false })
+	clearTimer()
+};
+
+const setInput = (ev: Event) => {
+
+	console.log(ev.target);
+
+	if (store.timer) {
+    clearTimer();
+  }
+  store.timer = setTimeout(fetchData, 1000)
+};
+
+mainInput && mainInput.addEventListener('input', setInput)
+     
+---
+
+<div class="container-flex-col full-width">
+	<div id="loader">
+		<h5>Loader...</h5>
+	</div>
+	<input id="main-input" class="main-input" />
+	<div class="news-list">
+	</div>
+</div>
+
+
+<style>
+	.link-card {
+		list-style: none;
+		display: flex;
+		padding: 0.25rem;
+		background-color: white;
+		background-image: none;
+		background-size: 400%;
+		border-radius: 0.6rem;
+		background-position: 100%;
+		transition: background-position 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+		box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+	}
+
+	.link-card > a {
+		width: 100%;
+		text-decoration: none;
+		line-height: 1.4;
+		padding: 1rem 1.3rem;
+		border-radius: 0.35rem;
+		color: #111;
+		background-color: white;
+		opacity: 0.8;
+	}
+	h2 {
+		margin: 0;
+		font-size: 1.25rem;
+		transition: color 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+	}
+	p {
+		margin-top: 0.5rem;
+		margin-bottom: 0;
+		color: #444;
+	}
+	.link-card:is(:hover, :focus-within) {
+		background-position: 0;
+		background-image: var(--accent-gradient);
+	}
+	.link-card:is(:hover, :focus-within) h2 {
+		color: rgb(var(--accent));
+	}
+</style>
